@@ -1,26 +1,95 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import './styles.scss';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Header from './components/Header';
+// import Footer from './components/Footer';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import DevPanel from './components/DevPanel';
+import GamePanel from './components/GamePanel';
+import About from './components/About';
+import DevDetails from './components/DevDetails';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [devs, setDevs] = useState([]);
+    const [games, setGames] = useState([]);
+
+    useEffect(() => {
+        fetchData();
+        // document.title = "EbonyMemo admin"
+    }, [])
+
+    async function fetchData() {
+        await fetch('https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/')
+            .then(async (res) => {
+                if (!res.ok) {
+                    throw Error(res.statusText);
+                }
+                return res;
+            })
+            .then(async (res) => {
+                const data = await res.json();
+                setGames(data.result);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+        await fetch('https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/')
+            .then(async (res) => {
+                if (!res.ok) {
+                    throw Error(res.statusText);
+                }
+                return res;
+            })
+            .then(async res => {
+                const data = await res.json();
+                setDevs(data.result);
+                // console.log(data.result);
+                // console.log(devs);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            // console.log('fetched');
+    }
+
+    return (
+        <div className="app">
+            <Router>
+                <Header />
+                <Navbar />
+                <hr></hr>
+                <Switch>
+                    <Route exact path="/">
+                        <Home/>
+                    </Route>
+                    <Route exact path="/developers">
+                        <DevPanel devs={devs}/>
+                    </Route>
+                    <Route exact path="/games">
+                        <GamePanel games={games}/>
+                    </Route>
+                    <Route path="/about">
+                        <About/>
+                    </Route>
+            
+                    <Route path="/developers/new">
+                        <DevDetails editMode={false}/>
+                    </Route>
+                    <Route path="/developers/:devId">
+                        <DevDetails editMode={true}/>
+                    </Route>
+                </Switch>
+                {/* <Footer /> */}
+            </Router>
+        </div>
+    );
 }
+
+// function findDev(id) {
+
+//     return dev.devId === id
+// }
 
 export default App;
