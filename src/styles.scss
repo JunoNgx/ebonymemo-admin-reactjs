@@ -6,6 +6,7 @@ $text-col: #444;
 $url-col: darkcyan;
 $err-col: tomato;
 $res-col: limegreen;
+$trans-t: 0.4s;
 
 body {
     -webkit-font-smoothing: antialiased;
@@ -56,7 +57,7 @@ hr {
     color: $url-col;
     text-decoration: none;
     padding: 0.5rem 2rem;
-    transition: 0.4s;
+    transition: $trans-t;
 }
 
 .navbar-item:hover {
@@ -150,9 +151,9 @@ button {
     flex-basis: 30%;
 }
 
-.detail-panel-col-rt button {
-    margin: 1rem;
-}
+// .detail-panel-col-rt button {
+    
+// }
 
 .error {
     color: $err-col;
@@ -160,6 +161,48 @@ button {
 
 .api-res {
     color: $res-col;
+}
+
+.welcome p, .about p {
+    max-width: 400px;
+    margin: 16px auto;
+    text-align: left;
+    hyphens: auto;
+}
+
+.welcome {
+    margin: auto;
+}
+
+button {
+    font-family: Roboto Condensed, sans-serif;
+    font-size: 1rem;
+}
+
+.detail-button {
+    width: 100%;
+    margin: 1rem;
+}
+
+button.create-button {
+    border: solid 1px $text-col;
+    padding: 0.5rem 1rem;
+    color: $back-col;
+    background-color: $url-col;
+    transition: $trans-t;
+}
+
+button.create-button:hover {
+    background-color: $back-col;
+    color: $text-col;
+}
+
+button.delete-button {
+    background-color: $err-col;
+    border: none;
+    color: $back-col;
+    padding: 0.5rem;
+    margin-top: 5rem;
 }
 
 // input .dev-detail-item {

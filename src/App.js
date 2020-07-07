@@ -11,7 +11,7 @@ import About from './components/About';
 import DevDetails from './components/DevDetails';
 
 function App() {
-    const [devs, setDevs] = useState([]);
+    // const [devs, setDevs] = useState([]);
     const [games, setGames] = useState([]);
 
     useEffect(() => {
@@ -35,23 +35,7 @@ function App() {
                 console.log(err);
             })
 
-        await fetch('https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/')
-            .then(async (res) => {
-                if (!res.ok) {
-                    throw Error(res.statusText);
-                }
-                return res;
-            })
-            .then(async res => {
-                const data = await res.json();
-                setDevs(data.result);
-                // console.log(data.result);
-                // console.log(devs);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-            // console.log('fetched');
+
     }
 
     return (
@@ -65,7 +49,7 @@ function App() {
                         <Home/>
                     </Route>
                     <Route exact path="/developers">
-                        <DevPanel devs={devs}/>
+                        <DevPanel/>
                     </Route>
                     <Route exact path="/games">
                         <GamePanel games={games}/>

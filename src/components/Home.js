@@ -6,8 +6,10 @@ export default function Home() {
     }, [])
 
     return (
-        <div>
-            <h4>This is home page</h4>
+        <div className="welcome">
+            <h4>Welcome to EbonyMemo admin panel</h4>
+            <p>Use the navigation bar and manage content as needed. Documentation and guides are generally written on the respective pages.</p>
+            <p>Don't hesitate to contact me if you have any question.</p>
         </div>
     )
 }

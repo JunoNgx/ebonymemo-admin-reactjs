@@ -7,8 +7,8 @@ export default function About() {
     }, [])
 
     return (
-        <div>
-            <h4>This is about page</h4>
+        <div className="about">
+            <p>This is the admin panel for <strong>EbonyMemo</strong>, an arthouse smartphone videogame currator website that has not yet been deployed.</p>
         </div>
     )
 }

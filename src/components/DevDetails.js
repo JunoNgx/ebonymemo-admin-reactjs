@@ -12,7 +12,7 @@ export default function DevDetails({editMode}) {
     const [personnel, setPersonnel] = useState([]);
 
     const [error, setError] = useState('');
-    const [backendRes, setbackendRes] = useState('');
+    const [backendRes, setBackendRes] = useState('');
     // const location = useLocation();
     const match = useRouteMatch('/developers/:devId');
 
@@ -39,8 +39,10 @@ export default function DevDetails({editMode}) {
                     console.log(err);
                 })
         }
-        // console.log(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`);
-        fetchData();
+        if (editMode) {
+            fetchData();
+            // console.log("Developers fetched");
+        }
     }, []);
 
     function handlePersonnelChange(value, index) {
@@ -51,19 +53,21 @@ export default function DevDetails({editMode}) {
 
     function addPersonnel() {
         setPersonnel([...personnel, '']);
+        // console.log('add');
     }
 
     function removePersonnel(index) {
-        // console.log();
         let _personnel = [...personnel];
         _personnel.splice(index, 1);
         setPersonnel(_personnel)
+        
+        // setPersonnel([])
+        // console.log('remove');
     }
 
     function handleSubmission() {
-        // `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`
 
-        setbackendRes('');
+        setBackendRes('');
         if (devId === '') {
             setError('devId is required and not filled');
             return;
@@ -76,45 +80,83 @@ export default function DevDetails({editMode}) {
             setError('origin is required and not filled');
             return;
         }
-        if (origin.length != 2) {
+        if (origin.length !== 2) {
             setError('Invalid ISO country code');
             return;
         }
 
+        // Data processing
+        //////////////////////////////////
+
         let bodyContent = {
+            devId,
             name,
             origin,
             website,
             twitter,
             personnel
         }
-        if (devId !== match.params.devId) {
-            bodyContent.devId = devId;
+
+        // API allows change of devId
+        // won't allow edit if new devId is not unique
+        if (editMode && devId === match.params.devId) {
+            delete bodyContent.devId;
         }
 
+        bodyContent.origin.toUpperCase();
+        // `http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`
+        // `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`
+
+        const _url = (editMode)
+            ? `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`
+            : `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/`;
+        const _method = (editMode) ? 'PATCH' : 'POST';
+
+        // Submission
+        ///////////////////////////
+
         fetch(
-            `http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`,
+            _url,
             {
-                method: 'PATCH',
+                method: _method,
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(bodyContent)
             }
         )
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-                setbackendRes(`${data.message}; ${data.result.nModified} document has been updated.`)
+                // console.log(data);
+                if (editMode) {
+                    setBackendRes(`${data.message}; ${data.result.nModified} document has been updated.`)
+                } else {
+                    console.log(data)
+                    setBackendRes(`${data.message}; ${data.result.name} (${data.result.devId}) has been created.`)
+                }
             })
-
             setError('');
     }
 
-    let submitButton;
-    if (editMode) {
-        submitButton = <button type="button" onClick={handleSubmission}>Save</button>
-    } else {
-        submitButton = <button>Create</button>
+    function handleDeletion() {
+        if (window.confirm('Please confirm the deletion of this developer from the database. This will affect other documents using this entry, do make preparation before proceeding.')) {
+            // console.log('confirm deletion');
+            fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`,
+                {
+                    method: 'DELETE',
+                    headers: {'Content-Type': 'application/json'}
+                }
+            )
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    setBackendRes(`${data.message}; ${data.result.deletedCount} document has been deleted.`);
+                })
+        }
     }
+
+    const submitButtonName = (editMode) ? "Save" : "Create";
+    const deleteButton = (editMode)
+        ? <button className="detail-button delete-button" type="button" onClick={handleDeletion}>Delete</button>
+        : '';
 
     return (
         <div className="detail-panel">
@@ -133,8 +175,8 @@ export default function DevDetails({editMode}) {
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="var"><strong>origin</strong></span> (String, required): the base country of developer in <strong>ISO code</strong> (e.g. US, SE, SG).Uppercase formatting is optional and will be handled by the backend.</p>
-                        <input type="text" value={origin} onChange={(e)=>setOrigin(e.target.value)}></input>
+                        <p><span className="var"><strong>origin</strong></span> (String, required): the base country of developer in <strong>ISO code</strong> (e.g. US, SE, SG). Two characters only.</p>
+                        <input type="text" value={origin} onChange={(e)=>setOrigin(e.target.value.toUpperCase())} maxlength={2} pattern="[a-z]"></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">
@@ -143,15 +185,15 @@ export default function DevDetails({editMode}) {
                         <input type="text" value={twitter} onChange={(e)=>setTwitter(e.target.value)}></input>
                     </label>
                 </div>
-                <div className="detail-panel-item">
+                {/* <div className="detail-panel-item">
                     <label>
                         <p><span className="var"><strong>website</strong></span> (String): the full website url of the developer.</p>
                         <input type="text" value={website} onChange={(e)=>setWebsite(e.target.value)}></input>
                     </label>
-                </div>
+                </div> */}
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="var"><strong>personnel</strong></span> (Array of  Strings): a list of notable and/or key members of the group (when applicable). Blank entries will automatically be omitted upon submission.</p>
+                        <p><span className="var"><strong>personnel</strong></span> (Array of  Strings): a list of notable and/or key members of the group (when applicable). Highly optional. Don't fret it.</p>
                         {personnel.map((person, index) => (
                             <div key={index}>
                                 <input
@@ -164,17 +206,17 @@ export default function DevDetails({editMode}) {
                                 <button type="button" onClick={() => removePersonnel(index)}>X</button>
                             </div>
                         ))}
-                        <button type="button" onClick={addPersonnel}>Add one more field</button>
                     </label>
-                    
+                    <button type="button" onClick={addPersonnel}>Add one more person</button>
                 </div>
             </div>
 
             <div className="detail-panel-col-rt">
                 <p className="error">{error}</p>
                 <p className="api-res">{backendRes}</p>
-                {submitButton}
-                <Link to="/developers"><button>Back</button></Link>
+                <button className="detail-button" type="button" onClick={handleSubmission}>{submitButtonName}</button>
+                <Link to="/developers"><button className="detail-button">Back</button></Link>
+                {deleteButton}
             </div>
         </div>
     )
