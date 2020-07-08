@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {useRouteMatch, Link} from 'react-router-dom';
+import {useRouteMatch, Link, useLocation} from 'react-router-dom';
 import { useQuery } from 'react-query';
 import '../styles.scss';
 
@@ -16,9 +16,15 @@ export default function DevDetails({editMode}) {
     const [backendRes, setBackendRes] = useState('');
     // const location = useLocation();
     const match = useRouteMatch('/developers/:devId');
+    const location = useLocation();
 
     useEffect(() => {
         async function fetchData() {
+
+            // const { isLoading, error, data } = useQuery("devs", async () => {
+                
+            // })
+
             await fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`)
                 .then(async (res) => {
                     if (!res.ok) {
@@ -44,6 +50,8 @@ export default function DevDetails({editMode}) {
             fetchData();
             // console.log("Developers fetched");
         }
+
+        // console.log(location.pathname);
     }, []);
 
     function handlePersonnelChange(value, index) {

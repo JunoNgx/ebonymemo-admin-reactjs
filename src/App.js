@@ -9,6 +9,7 @@ import DevPanel from './components/DevPanel';
 import GamePanel from './components/GamePanel';
 import About from './components/About';
 import DevDetails from './components/DevDetails';
+import { ReactQueryDevtools } from 'react-query-devtools';
 
 function App() {
     // const [devs, setDevs] = useState([]);
@@ -40,8 +41,9 @@ function App() {
 
     return (
         <div className="app">
+            <Header />
+            <ReactQueryDevtools />
             <Router>
-                <Header />
                 <Navbar />
                 <hr></hr>
                 <Switch>

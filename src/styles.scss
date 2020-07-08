@@ -22,7 +22,7 @@ body {
     padding: 1rem;
     border: 1px solid black;
     margin: auto;
-    // min-height: 100vh;
+    min-height: 70vh;
     // position: relative;
 }
 
@@ -58,6 +58,11 @@ hr {
     text-decoration: none;
     padding: 0.5rem 2rem;
     transition: $trans-t;
+}
+
+.navbar-item-active {
+    background-color: teal;
+    color: $back-col;
 }
 
 .navbar-item:hover {
