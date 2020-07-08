@@ -70,12 +70,12 @@ hr {
     color: $back-col;
 }
 
-.panel {
+.item-list {
     display: flex;
     flex-direction: column;
 }
 
-.panel input {
+.item-list input {
     margin: 0.5rem;
 }
 
@@ -190,6 +190,7 @@ button {
 }
 
 button.create-button {
+    margin: 1rem;
     border: solid 1px $text-col;
     padding: 0.5rem 1rem;
     color: $back-col;

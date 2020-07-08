@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {useRouteMatch, Link, useLocation} from 'react-router-dom';
-import { useQuery } from 'react-query';
+import {useRouteMatch, Link} from 'react-router-dom';
 import '../styles.scss';
 
 export default function DevDetails({editMode}) {
@@ -16,7 +15,7 @@ export default function DevDetails({editMode}) {
     const [backendRes, setBackendRes] = useState('');
     // const location = useLocation();
     const match = useRouteMatch('/developers/:devId');
-    const location = useLocation();
+    // const location = useLocation();
 
     useEffect(() => {
         async function fetchData() {
@@ -52,7 +51,7 @@ export default function DevDetails({editMode}) {
         }
 
         // console.log(location.pathname);
-    }, []);
+    }, [editMode, match.params.devId]);
 
     function handlePersonnelChange(value, index) {
         let _personnel = [...personnel];
@@ -185,7 +184,7 @@ export default function DevDetails({editMode}) {
                 <div className="detail-panel-item">
                     <label>
                         <p><span className="var"><strong>origin</strong></span> (String, required): the base country of developer in <strong>ISO code</strong> (e.g. US, SE, SG). Two characters only.</p>
-                        <input type="text" value={origin} onChange={(e)=>setOrigin(e.target.value.toUpperCase())} maxlength={2} pattern="[a-z]"></input>
+                        <input type="text" value={origin} onChange={(e)=>setOrigin(e.target.value.toUpperCase())} maxLength={2} pattern="[a-z]"></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">

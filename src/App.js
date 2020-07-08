@@ -5,11 +5,9 @@ import Header from './components/Header';
 // import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import DevPanel from './components/DevPanel';
-import GamePanel from './components/GamePanel';
+import ItemList from './components/ItemList';
 import About from './components/About';
 import DevDetails from './components/DevDetails';
-import { ReactQueryDevtools } from 'react-query-devtools';
 
 function App() {
     // const [devs, setDevs] = useState([]);
@@ -42,7 +40,6 @@ function App() {
     return (
         <div className="app">
             <Header />
-            <ReactQueryDevtools />
             <Router>
                 <Navbar />
                 <hr></hr>
@@ -51,10 +48,10 @@ function App() {
                         <Home/>
                     </Route>
                     <Route exact path="/developers">
-                        <DevPanel/>
+                        <ItemList type="dev"/>
                     </Route>
                     <Route exact path="/games">
-                        <GamePanel games={games}/>
+                        <ItemList type="game"/>
                     </Route>
                     <Route path="/about">
                         <About/>

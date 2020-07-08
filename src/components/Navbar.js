@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import NavbarItem from './NavbarItem';
 
 export default function Navbar() {
