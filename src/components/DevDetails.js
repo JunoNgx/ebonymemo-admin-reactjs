@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {useRouteMatch, Link} from 'react-router-dom';
+import { useQuery } from 'react-query';
 import '../styles.scss';
 
 export default function DevDetails({editMode}) {
@@ -181,7 +182,7 @@ export default function DevDetails({editMode}) {
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="var"><strong>twitter</strong></span> (String): the twitter handle of the developer, without full url and without the @ sign (e.g. <span className="var">adamatomic</span> for Adam Saltsman).</p>
+                        <p><span className="var"><strong>twitter</strong></span> (String): the Twitter handle of the developer, without full url and without the @ sign (e.g. <span className="var">adamatomic</span> for Adam Saltsman).</p>
                         <input type="text" value={twitter} onChange={(e)=>setTwitter(e.target.value)}></input>
                     </label>
                 </div>
