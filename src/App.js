@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './styles.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
@@ -8,71 +8,51 @@ import Home from './components/Home';
 import ItemList from './components/ItemList';
 import About from './components/About';
 import DevDetails from './components/DevDetails';
+import GameDetails from './components/GameDetails';
 
 function App() {
-    // const [devs, setDevs] = useState([]);
-    const [games, setGames] = useState([]);
-
-    useEffect(() => {
-        fetchData();
-        // document.title = "EbonyMemo admin"
-    }, [])
-
-    async function fetchData() {
-        await fetch('https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/')
-            .then(async (res) => {
-                if (!res.ok) {
-                    throw Error(res.statusText);
-                }
-                return res;
-            })
-            .then(async (res) => {
-                const data = await res.json();
-                setGames(data.result);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-
-
-    }
-
     return (
         <div className="app">
             <Header />
             <Router>
                 <Navbar />
-                <hr></hr>
+                <hr/>
                 <Switch>
+
                     <Route exact path="/">
                         <Home/>
                     </Route>
+
                     <Route exact path="/developers">
                         <ItemList type="dev"/>
                     </Route>
-                    <Route exact path="/games">
-                        <ItemList type="game"/>
-                    </Route>
-                    <Route path="/about">
-                        <About/>
-                    </Route>
-            
                     <Route path="/developers/new">
                         <DevDetails editMode={false}/>
                     </Route>
                     <Route path="/developers/:devId">
                         <DevDetails editMode={true}/>
                     </Route>
+
+                    <Route exact path="/games">
+                        <ItemList type="game"/>
+                    </Route>
+                    <Route path="/games/new">
+                        <GameDetails editMode={false}/>
+                    </Route>
+                    <Route path="/games/:gameId">
+                        <GameDetails editMode={true}/>
+                    </Route>
+                    
+
+                    <Route path="/about">
+                        <About/>
+                    </Route>
+            
                 </Switch>
                 {/* <Footer /> */}
             </Router>
         </div>
     );
 }
-
-// function findDev(id) {
-
-//     return dev.devId === id
-// }
 
 export default App;

@@ -9,7 +9,12 @@ export default function ItemList({type}) {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [isFetched, setIsFetched] = useState(false);
-    const [typeVars, setTypeVars] = useState({})
+    const [typeVars, setTypeVars] = useState({
+        url: 'https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/',
+        idVar: "devId",
+        createButtonLabel: "Create New Developer",
+        createButtonLink: "developers/new"
+    })
 
     async function fetchData() {
         await fetch(typeVars.url)
@@ -50,7 +55,6 @@ export default function ItemList({type}) {
     useEffect(()=>{
         setIsFetched(false);
         setTypeVariables();
-        console.log(typeVars);
         document.title = "Developers - EbonyMemo admin panel"
     }, [type])
     useEffect(()=> { fetchData(); }, [typeVars])
@@ -71,22 +75,20 @@ export default function ItemList({type}) {
         setSearchResult(results);
     }
 
-    let mainContent;
-    mainContent = (isFetched)
-        ? <table>
-            <thead></thead>
-            <tbody>
-                <List type={type} searchResult={searchResult}/>
-            </tbody>
-            <tfoot></tfoot>
-        </table>
-        : <p>Data is being fetched. Please wait.</p>
-
     return (
         <div className="item-list">
             <Link to={typeVars.createButtonLink}><button className="create-button">{typeVars.createButtonLabel}</button></Link>
             <input type="text" value={searchTerm} onChange={handleSearchChange}></input>
-            {mainContent}
+            {(isFetched)
+                ? <table>
+                    <thead></thead>
+                    <tbody>
+                        <List type={type} searchResult={searchResult}/>
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+                : <p>Data is being fetched. Please wait.</p>
+            }
         </div>
     )
 }
@@ -95,13 +97,13 @@ function List({type, searchResult}) {
     if (type ==="dev") {
         return <>
             {searchResult.map((dev, index) => (
-                <DevCard key={dev.devId} dev={dev}/>
+                <DevCard key={dev.devId || index} dev={dev}/>
             ))}
         </>
-    } else if (type == "game") {
+    } else if (type === "game") {
         return <>
             {searchResult.map((game, index) => (
-                <GameCard key={game.gameId} game={game}/>
+                <GameCard key={game.gameId  || index} game={game}/>
             ))}
         </>
     }

@@ -147,8 +147,7 @@ export default function DevDetails({editMode}) {
     function handleDeletion() {
         if (window.confirm('Please confirm the deletion of this developer from the database. This will affect other documents using this entry, do make preparation before proceeding.')) {
             // console.log('confirm deletion');
-            fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`,
-                {
+            fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`, {
                     method: 'DELETE',
                     headers: {'Content-Type': 'application/json'}
                 }
@@ -161,47 +160,42 @@ export default function DevDetails({editMode}) {
         }
     }
 
-    const submitButtonName = (editMode) ? "Save" : "Create";
-    const deleteButton = (editMode)
-        ? <button className="detail-button delete-button" type="button" onClick={handleDeletion}>Delete</button>
-        : '';
-
     return (
         <div className="detail-panel">
             <div className="detail-panel-col-lt">
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="var"><strong>devId</strong></span> (String, required): the unique identifier for the developers without space or capitlisation. When in doubt, using Twitter handle is usually a safe and good choice. This can be edited, but make sure the new value is also unique.</p>
+                        <p><span className="code"><strong>devId</strong></span> (String, required): the unique identifier for the developers without space or capitlisation. When in doubt, using Twitter handle is usually a safe and good choice. This can be edited, but make sure the new value is also unique.</p>
                         <input type="text" value={devId} onChange={(e)=>setDevId(e.target.value)}></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="var"><strong>name</strong></span> (String, required): the full and formal capitalised name of the developer. This is what will be displayed for the most part.</p>
+                        <p><span className="code"><strong>name</strong></span> (String, required): the full and formal capitalised name of the developer. This is what will be displayed for the most part.</p>
                         <input type="text" value={name} onChange={(e)=>setName(e.target.value)}></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="var"><strong>origin</strong></span> (String, required): the base country of developer in <strong>ISO code</strong> (e.g. US, SE, SG). Two characters only.</p>
+                        <p><span className="code"><strong>origin</strong></span> (String, required): the base country of developer in <strong>ISO code</strong> (e.g. US, SE, SG). Two characters only.</p>
                         <input type="text" value={origin} onChange={(e)=>setOrigin(e.target.value.toUpperCase())} maxLength={2} pattern="[a-z]"></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="var"><strong>twitter</strong></span> (String): the Twitter handle of the developer, without full url and without the @ sign (e.g. <span className="var">adamatomic</span> for Adam Saltsman).</p>
+                        <p><span className="code"><strong>twitter</strong></span> (String): the Twitter handle of the developer, without full url and without the @ sign (e.g. <span className="var">adamatomic</span> for Adam Saltsman).</p>
                         <input type="text" value={twitter} onChange={(e)=>setTwitter(e.target.value)}></input>
                     </label>
                 </div>
-                {/* <div className="detail-panel-item">
-                    <label>
-                        <p><span className="var"><strong>website</strong></span> (String): the full website url of the developer.</p>
-                        <input type="text" value={website} onChange={(e)=>setWebsite(e.target.value)}></input>
-                    </label>
-                </div> */}
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="var"><strong>personnel</strong></span> (Array of  Strings): a list of notable and/or key members of the group (when applicable). Highly optional. Don't fret it.</p>
+                        <p><span className="code"><strong>website</strong></span> (String): the full website url of the developer.</p>
+                        <input type="text" value={website} onChange={(e)=>setWebsite(e.target.value)}></input>
+                    </label>
+                </div>
+                <div className="detail-panel-item">
+                    <label>
+                        <p><span className="code"><strong>personnel</strong></span> (Array of  Strings): a list of notable and/or key members of the group (when applicable). Highly optional. Don't fret it.</p>
                         {personnel.map((person, index) => (
                             <div key={index}>
                                 <input
@@ -222,9 +216,11 @@ export default function DevDetails({editMode}) {
             <div className="detail-panel-col-rt">
                 <p className="error">{error}</p>
                 <p className="api-res">{backendRes}</p>
-                <button className="detail-button" type="button" onClick={handleSubmission}>{submitButtonName}</button>
+                <button className="detail-button" type="button" onClick={handleSubmission}>{(editMode) ? "Save" : "Create"}</button>
                 <Link to="/developers"><button className="detail-button">Back</button></Link>
-                {deleteButton}
+                {(editMode)
+                    ? <button className="detail-button delete-button" onClick={handleDeletion}>Delete</button>
+                    : ''}
             </div>
         </div>
     )

@@ -7,7 +7,7 @@ export default function GameCard({game}) {
         <tr>
             <td><span className="var">{game.gameId}</span></td>
             <td>{game.name}</td>
-            <td>{game.devId}</td>
+            <td>{game.developer ? game.developer.name : ''}</td>
             <td>{game.releaseYear}</td>
             <td className="edit-button-cell"><Link to={`/games/${game.gameId} `}><button>Edit</button></Link></td>
         </tr>
