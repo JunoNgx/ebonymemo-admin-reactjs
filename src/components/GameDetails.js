@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles.scss';
 import { useRouteMatch, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import CoverPanel from './CoverPanel';
 
 export default function GameDetails({editMode}) {
 
@@ -13,17 +14,22 @@ export default function GameDetails({editMode}) {
     const [android, setAndroid] = useState('');
     const [other, setOther] = useState(false);
     const [description, setDescription] = useState(''); 
+    const [coverUrl, setCoverUrl] = useState(''); 
     
     const [devs, setDevs] = useState([]);
     const [isFetchedDevData, setIsFetchDevData] = useState(false);
-    const [error, setError] = useState('');
-    const [backendRes, setBackendRes] = useState('');
+    // const [error, setError] = useState('');
+    // const [backendRes, setBackendRes] = useState('');
+    const [msg, setMsg] = useState('')
+    const [msgClassName, setMsgClassName] = useState('')
+
     const match = useRouteMatch('/games/:gameId');
 
     useEffect(()=>{
         async function fetchDevData() {
             try {
                 const rawRes = await fetch('https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/');
+                // const rawRes = await fetch('http://localhost:3000/.netlify/functions/server/devs/');
                 const data = await rawRes.json();
                 setDevs(data.result);
                 setIsFetchDevData(true);
@@ -38,35 +44,59 @@ export default function GameDetails({editMode}) {
         async function fetchGameData() {
             try {
                 const rawRes = await fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`)
+                // const rawRes = await fetch(`http://localhost:3000/.netlify/functions/server/games/${match.params.gameId}`)
                 const data = await rawRes.json();
 
-                setGameId(data.gameId);
-                setName(data.name);
-                setReleaseYear(data.releaseYear);
-                setDevId(data.devId);
-                setIos(data.ios);
-                setAndroid(data.android);
-                setOther(data.other);
-                setDescription(data.description);
+                setGameId(data.result.gameId);
+                setName(data.result.name);
+                setReleaseYear(data.result.releaseYear);
+                setDevId(data.result.devId);
+                setIos(data.result.ios);
+                setAndroid(data.result.android);
+                setOther(data.result.other);
+                setDescription(data.result.description);
+                setCoverUrl(data.result.coverUrl);
+
+                showApiRes(data.message)
 
             } catch(e) {
                  console.log(e)
             }
         }
-        if (editMode) fetchGameData();
+        if (editMode) {
+            fetchGameData();
+            showRequest('Fetching data')
+        }
     }, [isFetchedDevData])
+
+    function showApiRes(_message) {
+        setMsg(_message);
+        setMsgClassName('api-res')
+    }
+
+    function showError(_message) {
+        setMsg(_message);
+        setMsgClassName('error')
+    }
+
+    function showRequest(_message) {
+        setMsg(_message);
+        setMsgClassName('')
+    }
 
     async function handleDeletion() {
         if (window.confirm('Are you sure you wish to delete this document?')) {
             try {
                 const rawRes = await fetch(
                     `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`, {
+                // const rawRes = await fetch(
+                    // `http://localhost:3000/.netlify/functions/server/devs/${match.params.gameId}`, {
                         method: 'DELETE',
                         headers: {'Content-type': 'application/json'}
                     }
                 )
                 const data = await rawRes.json();
-                setBackendRes(`${data.message}; ${data.result.deletedCount} document has been deleted.`);
+                showApiRes(`${data.message}; ${data.result.deletedCount} document has been deleted.`);
             } catch(e) {
                 console.log(e);
             }   
@@ -75,21 +105,25 @@ export default function GameDetails({editMode}) {
 
     async function handleSubmission() {
 
-        setBackendRes('');
+        setMsg('');
         if (gameId === '') {
-            setError('gameId is required.')
+            showError('gameId is required.')
+            return;
+        }
+        if (gameId.toLowerCase() === 'new') {
+            showError('gameId as "new" is specifically not allowed.')
             return;
         }
         if (name === '') {
-            setError('name is required.')
+            showError('name is required.')
             return;
         }
         if (releaseYear === '') {
-            setError('releaseYear is required.')
+            showError('releaseYear is required.')
             return;
         }
         if (2100 < releaseYear || releaseYear < 2000) {
-            setError('Please enter a valid releaseYear')
+            showError('Please enter a valid releaseYear')
             return;
         }
 
@@ -104,34 +138,43 @@ export default function GameDetails({editMode}) {
             description,
         }
 
-        if (editMode && gameId === match.params.gameId) {
+        // console.log(match.params.gameId.trim())
+        // console.log(gameId + ' === ' + match.params.gameId.trim() + ' is ' + (gameId === match.params.gameId.trim()) )
+        if (editMode && gameId === match.params.gameId.trim()) {
             delete bodyContent.gameId;
+            // console.log('Removed gameId from request bodyContent')
         }
 
         const _url = (editMode)
             ? `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`
             : `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/`;
+        // const _url = (editMode)
+        //     ? `http://localhost:3000/.netlify/functions/server/games/${match.params.gameId}`
+        //     : `http://localhost:3000/.netlify/functions/server/games/`;
         const _method = (editMode) ? 'PATCH' : 'POST';
 
+        showRequest('Performing ' + _method)
         try {
             const rawRes = await fetch(_url,{
                     method: _method,
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(bodyContent)
                 }
-            )
+            );
             const data = await rawRes.json();
             console.log(data);
             if (editMode) {
-                setBackendRes(`${data.message}; ${data.result.nModified} document has been updated.`)
+                // console.log(`${data.message}; ${data.result.nModified} document has been updated.`)
+                // setMsg(`${data.message}; ${data.result.nModified} document has been updated.`)
+                // showApiRes(data.message + "; " + data.result.nModified + "document has been updated.");
+                showApiRes(`${data.message}; ${data.result.nModified} document has been updated.`)
             } else {
                 console.log(data)
-                setBackendRes(`${data.message}; ${data.result.name} (${data.result.gameId}) has been created.`)
+                showApiRes(`${data.message}; ${data.result.name} (${data.result.gameId}) has been created.`)
             }
         } catch(e) {
             console.log(e);
         }
-        setError('');
     }
 
     return (
@@ -141,7 +184,7 @@ export default function GameDetails({editMode}) {
 
                 <div className="detail-panel-item">
                     <label >
-                        <p><span className="code"><strong>gameId</strong></span> (String, required): The unique identifier for the game. Generally not displayed to user. Only alphanumerics are recommended. Can be edited, but must always be unique</p>
+                        <p><span className="code"><strong>gameId</strong></span> (String, required): The unique identifier for the game. Generally not displayed to user. Only alphanumerics are recommended. Can be edited, but must always be unique. <span className="code">"new"</span> is specifically not allowed.</p>
                         <input type="text" value={gameId} onChange={(e)=>setGameId(e.target.value)} />
                     </label>
                 </div>
@@ -168,7 +211,7 @@ export default function GameDetails({editMode}) {
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>iOS</strong></span> (String): The URL to the iOS App Store release of the game, if available. Enter <span className="code">delisted</span> for delisted release.</p>
+                        <p><span className="code"><strong>iOS</strong></span> (String): The URL to the iOS App Store release of the game, if available. Enter <span className="code">delisted</span> for delisted releases.</p>
                         <input type="text" value={ios} onChange={(e)=>{setIos(e.target.value)}} />
                     </label>
                 </div>
@@ -196,15 +239,21 @@ export default function GameDetails({editMode}) {
                 </div>
 
             </div>
-
             <div className="detail-panel-col-rt">
-                <p className="error">{error}</p>
-                <p className="api-res">{backendRes}</p>
-                <button className="detail-button" onClick={handleSubmission}>{(editMode) ? "Save" : "Create"}</button>
-                <Link to="/games"><button className="detail-button">Back</button></Link>
+
+                <div className={"detail-panel-col-rt-buttons"}>
+                    <p className={msgClassName}>{msg}</p>
+                    <button className="detail-button" onClick={handleSubmission}>{(editMode) ? "Save" : "Create"}</button>
+                    <Link to="/games" ><button className="detail-button">Back</button></Link>
+                    {(editMode)
+                        ? <button className="detail-button delete-button" onClick={handleDeletion}>Delete</button>
+                        : ''}
+                </div>
+
                 {(editMode)
-                    ? <button className="detail-button delete-button" onClick={handleDeletion}>Delete</button>
+                    ? <CoverPanel passedCoverUrl={coverUrl} />
                     : ''}
+
             </div>
         </div>
     )

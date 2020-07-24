@@ -145,20 +145,48 @@ button {
 }
 
 .detail-panel-item input {
-    width: 70%;
+    width: 90%;
     margin: 2px 4px 2px 0px;
 }
 
 .detail-panel-col-rt {
+    // border: 1px solid black;
     padding: 2rem;
     display: flex;
     flex-direction: column;
     flex-basis: 30%;
 }
 
-// .detail-panel-col-rt button {
-    
-// }
+.cover-panel {
+    // border: 1px solid black;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.game-cover {
+    width: 100%;
+}
+
+.detail-panel-col-rt-buttons {
+    // border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-button {
+    width: 100%;
+    // padding: 2rem;
+    margin-top: 2rem;
+}
+
+button.delete-button {
+    background-color: $err-col;
+    border: none;
+    color: $back-col;
+    padding: 0.5rem;
+    margin-top: 7rem;
+    margin-bottom: 7rem;
+}
 
 .error {
     color: $err-col;
@@ -184,11 +212,6 @@ button {
     font-size: 1rem;
 }
 
-.detail-button {
-    width: 100%;
-    margin: 1rem;
-}
-
 button.create-button {
     margin: 1rem;
     border: solid 1px $text-col;
@@ -203,13 +226,6 @@ button.create-button:hover {
     color: $text-col;
 }
 
-button.delete-button {
-    background-color: $err-col;
-    border: none;
-    color: $back-col;
-    padding: 0.5rem;
-    margin-top: 5rem;
-}
 
 // input .dev-detail-item {
 //     width: 100%;

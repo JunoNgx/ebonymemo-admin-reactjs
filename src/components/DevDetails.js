@@ -11,9 +11,13 @@ export default function DevDetails({editMode}) {
     const [website, setWebsite] = useState('');
     const [personnel, setPersonnel] = useState([]);
 
-    const [error, setError] = useState('');
-    const [backendRes, setBackendRes] = useState('');
+    // const [error, setError] = useState('');
+    // const [backendRes, setBackendRes] = useState('');
     // const location = useLocation();
+
+    const [msg, setMsg] = useState('')
+    const [msgClassName, setMsgClassName] = useState('')
+    
     const match = useRouteMatch('/developers/:devId');
     // const location = useLocation();
 
@@ -25,6 +29,7 @@ export default function DevDetails({editMode}) {
             // })
 
             await fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`)
+            // await fetch(`http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`)
                 .then(async (res) => {
                     if (!res.ok) {
                         throw Error(res.statusText);
@@ -34,12 +39,14 @@ export default function DevDetails({editMode}) {
                 .then(async (res) => {
                     const data = await res.json();
                     // console.log(data);
-                    setDevId(data.devId);
-                    setName(data.name);
-                    setOrigin(data.origin);
-                    setTwitter(data.twitter);
-                    setWebsite(data.website);
-                    setPersonnel(data.personnel);
+                    setDevId(data.result.devId);
+                    setName(data.result.name);
+                    setOrigin(data.result.origin);
+                    setTwitter(data.result.twitter);
+                    setWebsite(data.result.website);
+                    setPersonnel(data.result.personnel);
+
+                    showApiRes(data.message)
                 })
                 .catch(err => {
                     console.log(err);
@@ -47,11 +54,28 @@ export default function DevDetails({editMode}) {
         }
         if (editMode) {
             fetchData();
+            showRequest('Fetching data')
             // console.log("Developers fetched");
         }
 
         // console.log(location.pathname);
     }, [editMode, match.params.devId]);
+
+    
+    function showApiRes(_message) {
+        setMsg(_message);
+        setMsgClassName('api-res')
+    }
+
+    function showError(_message) {
+        setMsg(_message);
+        setMsgClassName('error')
+    }
+
+    function showRequest(_message) {
+        setMsg(_message);
+        setMsgClassName('')
+    }
 
     function handlePersonnelChange(value, index) {
         let _personnel = [...personnel];
@@ -75,21 +99,21 @@ export default function DevDetails({editMode}) {
 
     function handleSubmission() {
 
-        setBackendRes('');
+        setMsg('');
         if (devId === '') {
-            setError('devId is required and not filled');
+            showError('devId is required and not filled');
             return;
         }
         if (name === '') {
-            setError('name is required and not filled');
+            showError('name is required and not filled');
             return;
         }
         if (origin === '') {
-            setError('origin is required and not filled');
+            showError('origin is required and not filled');
             return;
         }
         if (origin.length !== 2) {
-            setError('Invalid ISO country code');
+            showError('Invalid ISO country code');
             return;
         }
 
@@ -107,7 +131,7 @@ export default function DevDetails({editMode}) {
 
         // API allows change of devId
         // won't allow edit if new devId is not unique
-        if (editMode && devId === match.params.devId) {
+        if (editMode && devId === match.params.devId.trim()) {
             delete bodyContent.devId;
         }
 
@@ -118,11 +142,14 @@ export default function DevDetails({editMode}) {
         const _url = (editMode)
             ? `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`
             : `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/`;
+            // ? `http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`
+            // : `http://localhost:3000/.netlify/functions/server/devs/`;
         const _method = (editMode) ? 'PATCH' : 'POST';
 
         // Submission
         ///////////////////////////
 
+        showRequest('Performing ' + _method)
         fetch(
             _url,
             {
@@ -135,19 +162,19 @@ export default function DevDetails({editMode}) {
             .then(data => {
                 // console.log(data);
                 if (editMode) {
-                    setBackendRes(`${data.message}; ${data.result.nModified} document has been updated.`)
+                    showApiRes(`${data.message}; ${data.result.nModified} document has been updated.`)
                 } else {
                     console.log(data)
-                    setBackendRes(`${data.message}; ${data.result.name} (${data.result.devId}) has been created.`)
+                    showApiRes(`${data.message}; ${data.result.name} (${data.result.devId}) has been created.`)
                 }
             })
-            setError('');
     }
 
     function handleDeletion() {
         if (window.confirm('Please confirm the deletion of this developer from the database. This will affect other documents using this entry, do make preparation before proceeding.')) {
             // console.log('confirm deletion');
             fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`, {
+            // fetch(`http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`, {
                     method: 'DELETE',
                     headers: {'Content-Type': 'application/json'}
                 }
@@ -155,7 +182,7 @@ export default function DevDetails({editMode}) {
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
-                    setBackendRes(`${data.message}; ${data.result.deletedCount} document has been deleted.`);
+                    showApiRes(`${data.message}; ${data.result.deletedCount} document has been deleted.`);
                 })
         }
     }
@@ -214,8 +241,7 @@ export default function DevDetails({editMode}) {
             </div>
 
             <div className="detail-panel-col-rt">
-                <p className="error">{error}</p>
-                <p className="api-res">{backendRes}</p>
+                <p className={msgClassName}>{msg}</p>
                 <button className="detail-button" type="button" onClick={handleSubmission}>{(editMode) ? "Save" : "Create"}</button>
                 <Link to="/developers"><button className="detail-button">Back</button></Link>
                 {(editMode)
