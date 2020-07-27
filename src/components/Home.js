@@ -15,7 +15,7 @@ export default function Home() {
                 ? <>
                     <p>Administrator authenticated: <strong>{auth.user}</strong>.</p>
                     <button onClick={auth.logout}>Logout</button>
-                    <p>For security and implementation reason, your session data is not recorded, your login session will only lasts <strong>one hour</strong> and your session data will not be stored in anyway, requiring you to login again with each page refresh.</p>
+                    <p>For security and implementation reason, your login session will only last <strong>one hour</strong>, and your session data will not be stored in any way, requiring you to login again with each page refresh.</p>
                     <p>Please take note to avoid regrettable loss of data and don't hesitate to contact Juno if you have any question.</p>
                 </>
                 : <>
