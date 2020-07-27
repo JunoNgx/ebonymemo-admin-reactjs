@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {useRouteMatch, useHistory} from 'react-router-dom';
 import '../styles.scss';
+import { AuthContext } from './AuthContext';
 
 export default function DevDetails({editMode}) {
 
@@ -21,6 +22,7 @@ export default function DevDetails({editMode}) {
     const match = useRouteMatch('/developers/:devId');
     const history = useHistory();
     // const location = useLocation();
+    const auth = useContext(AuthContext);
 
     useEffect(() => {
         async function fetchData() {
@@ -155,7 +157,10 @@ export default function DevDetails({editMode}) {
             _url,
             {
                 method: _method,
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${auth.accessToken}`
+                },
                 body: JSON.stringify(bodyContent)
             }
         )
@@ -177,7 +182,10 @@ export default function DevDetails({editMode}) {
             fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`, {
             // fetch(`http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`, {
                     method: 'DELETE',
-                    headers: {'Content-Type': 'application/json'}
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${auth.accessToken}`
+                    },
                 }
             )
                 .then(res => res.json())

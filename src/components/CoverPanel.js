@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useRouteMatch } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
 
 export default function CoverPanel({ passedCoverUrl }) {
     const [coverUrl, setCoverUrl] = useState('')
@@ -7,6 +8,7 @@ export default function CoverPanel({ passedCoverUrl }) {
     const [msg, setMsg] = useState('')
 
     const match = useRouteMatch('/games/:gameId');
+    const auth = useContext(AuthContext);
 
     useEffect(()=>{
         setCoverUrl(passedCoverUrl);
@@ -39,6 +41,9 @@ export default function CoverPanel({ passedCoverUrl }) {
                 {
                     method: 'POST',
                     // headers: {'Content-Type': 'multipart/form-data'},
+                    headers: {
+                        'Authorization': `Bearer ${auth.accessToken}`
+                    },
                     body: formData
                 }
             );

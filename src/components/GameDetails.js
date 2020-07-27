@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../styles.scss';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import CoverPanel from './CoverPanel';
+import { AuthContext } from './AuthContext';
 
 export default function GameDetails({editMode}) {
 
@@ -13,6 +14,7 @@ export default function GameDetails({editMode}) {
     const [ios, setIos] = useState('');
     const [android, setAndroid] = useState('');
     const [other, setOther] = useState(false);
+    const [featured, setFeatured] = useState(false);
     const [description, setDescription] = useState(''); 
     const [coverUrl, setCoverUrl] = useState(''); 
     
@@ -25,6 +27,7 @@ export default function GameDetails({editMode}) {
 
     const match = useRouteMatch('/games/:gameId');
     const history = useHistory();
+    const auth = useContext(AuthContext);
 
     useEffect(()=>{
         async function fetchDevData() {
@@ -55,6 +58,7 @@ export default function GameDetails({editMode}) {
                 setIos(data.result.ios);
                 setAndroid(data.result.android);
                 setOther(data.result.other);
+                setFeatured(data.result.featured);
                 setDescription(data.result.description);
                 setCoverUrl(data.result.coverUrl);
 
@@ -93,7 +97,10 @@ export default function GameDetails({editMode}) {
                 // const rawRes = await fetch(
                     // `http://localhost:3000/.netlify/functions/server/devs/${match.params.gameId}`, {
                         method: 'DELETE',
-                        headers: {'Content-type': 'application/json'}
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${auth.accessToken}`
+                        },
                     }
                 )
                 const data = await rawRes.json();
@@ -136,6 +143,7 @@ export default function GameDetails({editMode}) {
             ios,
             android,
             other,
+            featured,
             description,
         }
 
@@ -158,10 +166,14 @@ export default function GameDetails({editMode}) {
         try {
             const rawRes = await fetch(_url,{
                     method: _method,
-                    headers: {'Content-Type': 'application/json'},
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${auth.accessToken}`
+                    },
                     body: JSON.stringify(bodyContent)
                 }
             );
+            // console.log(auth.accessToken);
             const data = await rawRes.json();
             console.log(data);
             if (editMode) {
@@ -204,7 +216,6 @@ export default function GameDetails({editMode}) {
                 <div className="detail-panel-item">
                     <label>
                         <p><span className="code"><strong>devId</strong></span> (String, required): The <span className="code">devId</span> identifier of the developer of the game. It is recommended that the developer document is created prior to the creation of the game document. Alternatively, you may use a placeholder, but do remember to update this afterwards.</p>
-                        <p>It also should be noted that the options in this particular panel are automatically transcribed to the developers' full names.</p>
                         <select value={devId} onChange={(e)=>{setDevId(e.target.value)}} >
                             {(isFetchedDevData) ? <DevsOptions devs={devs}/> : ''}
                         </select>
@@ -224,8 +235,17 @@ export default function GameDetails({editMode}) {
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>other</strong></span> (String): Whether an alternative release exists for the game (e.g. Humble Store, itch.io, web). Should this field be "yes", more information should be provided in the game's description.</p>
+                        <p><span className="code"><strong>other</strong></span> (Boolean): Whether an alternative release exists for the game (e.g. Humble Store, itch.io, web). Should this field be "yes", more information should be provided in the game's description.</p>
                         <select value={other} onChange={(e)=>{setOther(e.target.value)}} >
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                    </label>
+                </div>
+                <div className="detail-panel-item">
+                    <label>
+                        <p><span className="code"><strong>featured</strong></span> (Boolean): Whether the game is considered a "featured", or "Editor's Choice", title for the site. Featured titles will be randomly displayed ont the landing page and can also be specificially broswed by the delivery application.</p>
+                        <select value={featured} onChange={(e)=>{setFeatured(e.target.value)}} >
                             <option value="false">No</option>
                             <option value="true">Yes</option>
                         </select>
@@ -261,5 +281,5 @@ export default function GameDetails({editMode}) {
 }
 
 function DevsOptions({devs}) {
-    return (devs.map((dev, index) => (<option key={devs.devId || index} value={dev.devId}>{dev.name}</option>)))
+    return (devs.map((dev, index) => (<option key={devs.devId || index} value={dev.devId}>{dev.devId}</option>)))
 }

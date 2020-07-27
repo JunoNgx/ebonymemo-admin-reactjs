@@ -26,9 +26,9 @@ function App() {
                             <Home/>
                         </Route>
 
-                        <ProtectedRoute exact path="/developers">
+                        <Route exact path="/developers">
                             <ItemList type="dev"/>
-                        </ProtectedRoute>
+                        </Route>
                         <ProtectedRoute path="/developers/new">
                             <DevDetails editMode={false}/>
                         </ProtectedRoute>
@@ -36,9 +36,9 @@ function App() {
                             <DevDetails editMode={true}/>
                         </ProtectedRoute>
 
-                        <ProtectedRoute exact path="/games">
+                        <Route exact path="/games">
                             <ItemList type="game"/>
-                        </ProtectedRoute>
+                        </Route>
                         <ProtectedRoute path="/games/new">
                             <GameDetails editMode={false}/>
                         </ProtectedRoute>

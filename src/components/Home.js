@@ -1,5 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
-// import Login from './Login';
+import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from './AuthContext';
 
 export default function Home() {
@@ -13,15 +12,19 @@ export default function Home() {
     return (
         <div className="welcome">
             {(auth.isAuthenticated)
-                ? <div>
+                ? <>
                     <p>Administrator authenticated: <strong>{auth.user}</strong>.</p>
                     <button onClick={auth.logout}>Logout</button>
-                </div>
-                : <Login/>
+                    <p>For security and implementation reason, your session data is not recorded, your login session will only lasts <strong>one hour</strong> and your session data will not be stored in anyway, requiring you to login again with each page refresh.</p>
+                    <p>Please take note to avoid regrettable loss of data and don't hesitate to contact Juno if you have any question.</p>
+                </>
+                : <>
+                    <Login/>
+                    <p>You have reached <strong>EbonyMemo</strong> admin panel.</p>
+                    <p>While there are areas of the website you can take a look at, most of the website functions require an admin credential. This page is reserved only for administrators of EbonyMemo.</p>
+                    <p>If you are visitor, please feel free to browse our content at <a href="http://ebonymemo.com" target={"_blank"}>EbonyMemo.com</a>.</p>
+                </>
             }
-            <h4>Welcome to EbonyMemo admin panel</h4>
-            <p>Use the navigation bar and manage content as needed. Documentation and guides are generally written on the respective pages.</p>
-            <p>Don't hesitate to contact me if you have any question.</p>
         </div>
     )
 }
@@ -29,10 +32,26 @@ export default function Home() {
 function Login() {
 
     const auth = useContext(AuthContext);
-    const [error, setError] = useState('Wrong username');
+    const [error, setError] = useState('');
 
-    function handleLoginSubmission() {
-        auth.login();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    async function handleLoginSubmission(e) {
+
+        e.preventDefault();
+        setError('')
+
+        if (username === '') {
+            setError('Please enter username');
+        }
+
+        if (password === '') {
+            setPassword('Please enter password')
+        }
+
+        const res = await auth.login(username, password);
+        setError(res);
     }
 
     return (
@@ -40,18 +59,18 @@ function Login() {
             <label>
                 <p>
                     Username
-                    <input type="text"/>
+                    <input type="text" onChange={(e)=>{setUsername(e.target.value)}}/>
                 </p>
             </label>
             <label>
                 <p>
                     Password
-                    <input type="password"/>
+                    <input type="password" onChange={(e)=>{setPassword(e.target.value)}}/>
                 </p>
             </label>
             <p className="error">{error}</p>
             <button onClick={handleLoginSubmission}>Login</button>
-            <p>If you have lost your password, please contact the administrator.</p>
+            <p>If you have lost your password, please contact Juno.</p>
         </form>
     )
 }

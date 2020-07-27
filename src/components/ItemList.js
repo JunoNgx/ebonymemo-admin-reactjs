@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import DevCard from './DevCard';
 import GameCard from './GameCard';
 import '../styles.scss';
+import { AuthContext } from './AuthContext';
 
 export default function ItemList({type}) {
     const [items, setItems] = useState([]);
@@ -15,6 +16,8 @@ export default function ItemList({type}) {
         createButtonLabel: "Create New Developer",
         createButtonLink: "developers/new"
     })
+
+    const auth = useContext(AuthContext);
 
     async function fetchData() {
         await fetch(typeVars.url)
@@ -77,7 +80,10 @@ export default function ItemList({type}) {
 
     return (
         <div className="item-list">
-            <Link to={typeVars.createButtonLink}><button className="create-button">{typeVars.createButtonLabel}</button></Link>
+            {(!auth.isAuthenticated)
+                ? <p className="error">Login is required for data access and modification.</p>
+                : <Link to={typeVars.createButtonLink}><button className="create-button">{typeVars.createButtonLabel}</button></Link>
+            }      
             <input type="text" value={searchTerm} onChange={handleSearchChange}></input>
             {(isFetched)
                 ? <table>
