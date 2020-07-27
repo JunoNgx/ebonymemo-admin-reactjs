@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import NavbarItem from './NavbarItem';
+import { AuthContext } from './AuthContext';
+
+
 
 export default function Navbar() {
+    const auth = useContext(AuthContext);
+
     return (
         <div className="navbar">
             <NavbarItem dest={"/"} name={"Home"}/>
             <NavbarItem dest={"/developers"} name={"Developers"}/>
             <NavbarItem dest={"/games"} name={"Games"}/>
             <NavbarItem dest={"/about"} name={"About"}/>
-            {/* <Link to="/" className="navbar-item">Home</Link>
-            <Link to="/developers" className="navbar-item">Developers</Link>
-            <Link to="/games" className="navbar-item">Games</Link>
-            <Link to="/about" className="navbar-item">About</Link> */}
+            {(auth.isAuthenticated)
+                ? <LogoutButton/>
+                : ''
+            }
         </div>
+    )
+}
+
+function LogoutButton() {
+    const auth = useContext(AuthContext);
+    return (
+        <span className={"navbar-item"} onClick={auth.logout}>Logout</span>
     )
 }

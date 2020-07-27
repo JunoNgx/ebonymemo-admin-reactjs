@@ -97,13 +97,13 @@ function List({type, searchResult}) {
     if (type ==="dev") {
         return <>
             {searchResult.map((dev, index) => (
-                <DevCard key={dev.devId || index} dev={dev}/>
+                <DevCard key={dev.devId} dev={dev}/>
             ))}
         </>
     } else if (type === "game") {
         return <>
             {searchResult.map((game, index) => (
-                <GameCard key={game.gameId  || index} game={game}/>
+                <GameCard key={game.gameId} game={game}/>
             ))}
         </>
     }

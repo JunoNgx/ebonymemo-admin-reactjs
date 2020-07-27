@@ -9,47 +9,50 @@ import ItemList from './components/ItemList';
 import About from './components/About';
 import DevDetails from './components/DevDetails';
 import GameDetails from './components/GameDetails';
+import { AuthProvider } from './components/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
     return (
         <div className="app">
             <Header />
             <Router>
-                <Navbar />
-                <hr/>
-                <Switch>
+                <AuthProvider>
+                    <Navbar />
+                    <hr/>
+                    <Switch>
 
-                    <Route exact path="/">
-                        <Home/>
-                    </Route>
+                        <Route exact path="/">
+                            <Home/>
+                        </Route>
 
-                    <Route exact path="/developers">
-                        <ItemList type="dev"/>
-                    </Route>
-                    <Route path="/developers/new">
-                        <DevDetails editMode={false}/>
-                    </Route>
-                    <Route path="/developers/:devId">
-                        <DevDetails editMode={true}/>
-                    </Route>
+                        <ProtectedRoute exact path="/developers">
+                            <ItemList type="dev"/>
+                        </ProtectedRoute>
+                        <ProtectedRoute path="/developers/new">
+                            <DevDetails editMode={false}/>
+                        </ProtectedRoute>
+                        <ProtectedRoute path="/developers/:devId">
+                            <DevDetails editMode={true}/>
+                        </ProtectedRoute>
 
-                    <Route exact path="/games">
-                        <ItemList type="game"/>
-                    </Route>
-                    <Route path="/games/new">
-                        <GameDetails editMode={false}/>
-                    </Route>
-                    <Route path="/games/:gameId">
-                        <GameDetails editMode={true}/>
-                    </Route>
-                    
-
-                    <Route path="/about">
-                        <About/>
-                    </Route>
-            
-                </Switch>
-                {/* <Footer /> */}
+                        <ProtectedRoute exact path="/games">
+                            <ItemList type="game"/>
+                        </ProtectedRoute>
+                        <ProtectedRoute path="/games/new">
+                            <GameDetails editMode={false}/>
+                        </ProtectedRoute>
+                        <ProtectedRoute path="/games/:gameId">
+                            <GameDetails editMode={true}/>
+                        </ProtectedRoute>
+                        
+                        <Route path="/about">
+                            <About/>
+                        </Route>
+                
+                    </Switch>
+                    {/* <Footer /> */}
+                </AuthProvider>
             </Router>
         </div>
     );

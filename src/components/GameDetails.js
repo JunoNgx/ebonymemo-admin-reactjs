@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles.scss';
-import { useRouteMatch, Link } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import CoverPanel from './CoverPanel';
 
@@ -24,6 +24,7 @@ export default function GameDetails({editMode}) {
     const [msgClassName, setMsgClassName] = useState('')
 
     const match = useRouteMatch('/games/:gameId');
+    const history = useHistory();
 
     useEffect(()=>{
         async function fetchDevData() {
@@ -244,7 +245,7 @@ export default function GameDetails({editMode}) {
                 <div className={"detail-panel-col-rt-buttons"}>
                     <p className={msgClassName}>{msg}</p>
                     <button className="detail-button" onClick={handleSubmission}>{(editMode) ? "Save" : "Create"}</button>
-                    <Link to="/games" ><button className="detail-button">Back</button></Link>
+                    <button className="detail-button" onClick={history.goBack}>Back</button>
                     {(editMode)
                         ? <button className="detail-button delete-button" onClick={handleDeletion}>Delete</button>
                         : ''}

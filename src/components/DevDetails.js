@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {useRouteMatch, Link} from 'react-router-dom';
+import {useRouteMatch, useHistory} from 'react-router-dom';
 import '../styles.scss';
 
 export default function DevDetails({editMode}) {
@@ -19,6 +19,7 @@ export default function DevDetails({editMode}) {
     const [msgClassName, setMsgClassName] = useState('')
     
     const match = useRouteMatch('/developers/:devId');
+    const history = useHistory();
     // const location = useLocation();
 
     useEffect(() => {
@@ -243,7 +244,7 @@ export default function DevDetails({editMode}) {
             <div className="detail-panel-col-rt">
                 <p className={msgClassName}>{msg}</p>
                 <button className="detail-button" type="button" onClick={handleSubmission}>{(editMode) ? "Save" : "Create"}</button>
-                <Link to="/developers"><button className="detail-button">Back</button></Link>
+                <button className="detail-button" onClick={history.goBack}>Back</button>
                 {(editMode)
                     ? <button className="detail-button delete-button" onClick={handleDeletion}>Delete</button>
                     : ''}
