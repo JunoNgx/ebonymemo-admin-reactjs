@@ -2,7 +2,7 @@
   "name": "ebonymemo-admin-reactjs",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://junongx.github.io/ebonymemo-admin-reactjs",
+  "homepage": "https://eleum-loyce.netlify.app/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
