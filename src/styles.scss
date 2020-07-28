@@ -76,6 +76,10 @@ hr {
     flex-direction: column;
 }
 
+table {
+    min-width: 100%;
+}
+
 .item-list input {
     margin: 0.5rem;
 }
