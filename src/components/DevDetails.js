@@ -31,7 +31,8 @@ export default function DevDetails({editMode}) {
                 
             // })
 
-            await fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`)
+            // await fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`)
+            await fetch(`${process.env.REACT_APP_API_URL}/devs/${match.params.devId}`)
             // await fetch(`http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`)
                 .then(async (res) => {
                     if (!res.ok) {
@@ -143,8 +144,10 @@ export default function DevDetails({editMode}) {
         // `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`
 
         const _url = (editMode)
-            ? `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`
-            : `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/`;
+            // ? `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`
+            // : `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/`;
+            ? `${process.env.REACT_APP_API_URL}/devs/${match.params.devId}`
+            : `${process.env.REACT_APP_API_URL}/devs/`;
             // ? `http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`
             // : `http://localhost:3000/.netlify/functions/server/devs/`;
         const _method = (editMode) ? 'PATCH' : 'POST';
@@ -179,7 +182,8 @@ export default function DevDetails({editMode}) {
     function handleDeletion() {
         if (window.confirm('Please confirm the deletion of this developer from the database. This will affect other documents using this entry, do make preparation before proceeding.')) {
             // console.log('confirm deletion');
-            fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`, {
+            // fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`, {
+            fetch(`${process.env.REACT_APP_API_URL}/devs/${match.params.devId}`, {
             // fetch(`http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`, {
                     method: 'DELETE',
                     headers: {
@@ -202,7 +206,7 @@ export default function DevDetails({editMode}) {
                 <div className="detail-panel-item">
                     <label>
                         <p><span className="code"><strong>devId</strong></span> (String, required): the unique identifier for the developers without space or capitlisation. When in doubt, using Twitter handle is usually a safe and good choice. This can be edited, but make sure the new value is also unique.</p>
-                        <input type="text" value={devId} onChange={(e)=>setDevId(e.target.value)}></input>
+                        <input type="text" value={devId} onChange={(e)=>setDevId((e.target.value).toLowerCase())}></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">

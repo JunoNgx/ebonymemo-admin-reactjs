@@ -32,7 +32,8 @@ export default function GameDetails({editMode}) {
     useEffect(()=>{
         async function fetchDevData() {
             try {
-                const rawRes = await fetch('https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/');
+                // const rawRes = await fetch('https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/');
+                const rawRes = await fetch(`${process.env.REACT_APP_API_URL}/devs/`);
                 // const rawRes = await fetch('http://localhost:3000/.netlify/functions/server/devs/');
                 const data = await rawRes.json();
                 setDevs(data.result);
@@ -47,7 +48,8 @@ export default function GameDetails({editMode}) {
     useEffect(()=>{
         async function fetchGameData() {
             try {
-                const rawRes = await fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`)
+                // const rawRes = await fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`)
+                const rawRes = await fetch(`${process.env.REACT_APP_API_URL}/games/${match.params.gameId}`)
                 // const rawRes = await fetch(`http://localhost:3000/.netlify/functions/server/games/${match.params.gameId}`)
                 const data = await rawRes.json();
 
@@ -93,7 +95,8 @@ export default function GameDetails({editMode}) {
         if (window.confirm('Are you sure you wish to delete this document?')) {
             try {
                 const rawRes = await fetch(
-                    `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`, {
+                    // `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`, {
+                    `${process.env.REACT_APP_API_URL}/games/${match.params.gameId}`, {
                 // const rawRes = await fetch(
                     // `http://localhost:3000/.netlify/functions/server/devs/${match.params.gameId}`, {
                         method: 'DELETE',
@@ -155,8 +158,10 @@ export default function GameDetails({editMode}) {
         }
 
         const _url = (editMode)
-            ? `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`
-            : `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/`;
+            // ? `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`
+            // : `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/`;
+            ? `${process.env.REACT_APP_API_URL}/games/${match.params.gameId}`
+            : `${process.env.REACT_APP_API_URL}/games/`;
         // const _url = (editMode)
         //     ? `http://localhost:3000/.netlify/functions/server/games/${match.params.gameId}`
         //     : `http://localhost:3000/.netlify/functions/server/games/`;
@@ -198,7 +203,7 @@ export default function GameDetails({editMode}) {
                 <div className="detail-panel-item">
                     <label >
                         <p><span className="code"><strong>gameId</strong></span> (String, required): The unique identifier for the game. Generally not displayed to user. Only alphanumerics are recommended. Can be edited, but must always be unique. <span className="code">"new"</span> is specifically not allowed.</p>
-                        <input type="text" value={gameId} onChange={(e)=>setGameId(e.target.value)} />
+                        <input type="text" value={gameId} onChange={(e)=>setGameId((e.target.value).toLowerCase())} />
                     </label>
                 </div>
                 <div className="detail-panel-item">

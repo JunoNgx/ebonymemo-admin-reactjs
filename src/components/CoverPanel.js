@@ -36,7 +36,8 @@ export default function CoverPanel({ passedCoverUrl }) {
         try {
             setMsg('Uploading ....')
             const rawRes = await fetch(
-                `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId.trim()}/cover`,
+                // `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId.trim()}/cover`,
+                `${process.env.REACT_APP_API_URL}/games/${match.params.gameId.trim()}/cover`,
                 // `http://localhost:3000/.netlify/functions/server/games/${match.params.gameId.trim()}/cover`,
                 {
                     method: 'POST',

@@ -11,10 +11,11 @@ export default function ItemList({type}) {
     const [searchResult, setSearchResult] = useState([]);
     const [isFetched, setIsFetched] = useState(false);
     const [typeVars, setTypeVars] = useState({
-        url: 'https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/',
-        idVar: "devId",
-        createButtonLabel: "Create New Developer",
-        createButtonLink: "developers/new"
+        // // url: 'https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/',
+        // url: `${process.env.REACT_APP_API_URL}/devs`,
+        // idVar: "devId",
+        // createButtonLabel: "Create New Developer",
+        // createButtonLink: "developers/new"
     })
 
     const auth = useContext(AuthContext);
@@ -40,14 +41,16 @@ export default function ItemList({type}) {
     function setTypeVariables() {
         if (type === "dev") {
             setTypeVars({
-                url: 'https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/',
+                // url: 'https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/',
+                url: `${process.env.REACT_APP_API_URL}/devs`,
                 idVar: "devId",
                 createButtonLabel: "Create New Developer",
                 createButtonLink: "developers/new"
             })
         } else if (type === "game") {
             setTypeVars({
-                url: 'https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/',
+                // url: 'https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/',
+                url: `${process.env.REACT_APP_API_URL}/games`,
                 idVar: "gameId",
                 createButtonLabel: "Create New Game",
                 createButtonLink: "games/new"
