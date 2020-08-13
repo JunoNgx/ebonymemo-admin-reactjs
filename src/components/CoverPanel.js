@@ -26,6 +26,10 @@ export default function CoverPanel({ passedCoverUrl }) {
 
     async function submitCover() {
         setMsg('')
+        if (!auth.isAuthenticated) {
+            setMsg('Login is required for data alteration')
+            return;
+        }
         if (image === '' || image === undefined) {
             setMsg('No file selected.');
             return;

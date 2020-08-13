@@ -23,21 +23,6 @@ body {
     border: 1px solid black;
     margin: auto;
     min-height: 70vh;
-    // position: relative;
-}
-
-.header {
-    // margin: auto;
-    // border: solid 1px black;
-}
-
-.footer {
-    // background-color: teal;
-    // position: absolute;
-    // bottom: 0px;
-    // width: 100%;
-    // margin: auto;
-    // text-align: center;
 }
 
 .navbar {
@@ -48,17 +33,19 @@ body {
 }
 
 hr {
-    // height: 2pt;
     background-color: #444;
 }
 
 .navbar-item {
-    // border: solid 1px black;
     color: $url-col;
     text-decoration: none;
     padding: 0.5rem 2rem;
     transition: $trans-t;
     cursor: pointer;
+    &:hover {
+        background-color: teal;
+        color: $back-col;
+    }
 }
 
 .navbar-item-active {
@@ -66,39 +53,21 @@ hr {
     color: $back-col;
 }
 
-.navbar-item:hover {
-    background-color: teal;
-    color: $back-col;
-}
-
 .item-list {
     display: flex;
     flex-direction: column;
+    input {
+        margin: 0.5rem;
+    }
 }
 
 table {
     min-width: 100%;
 }
 
-.item-list input {
-    margin: 0.5rem;
-}
-
 .code {
     font-family: Roboto Mono, monospace;
 }
-
-// .dev-card {
-//     border: solid 1px $text-col;
-//     padding: 4pt;
-//     margin: 5px;
-//     // display: flex;
-//     // flex-direction: row;
-//     // list-style: none;
-//     // justify-content: space-between;
-//     transition: 0.3s;
-//     text-align: left;
-// }
 
 td {
     border: none;
@@ -106,10 +75,9 @@ td {
 
 tr {
     text-align: left;
-}
-
-tr:hover {
-    background-color: #ccc;
+    &:hover {
+        background-color: #ccc;
+    }
 }
 
 .edit-button-cell {
@@ -128,25 +96,13 @@ button {
 }
 
 .detail-panel-col-lt {
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    // width: 100%;
-    // flex-wrap: wrap;
-    // flex: 2;
+
     flex-basis: 50%;
 }
 
 .detail-panel-item {
-    // width: 100%;
-    // display: flex;
-    // flex-direction: column;
-    // align-items: flex-start;
     text-align: left;
-    // margin: 0.5rem;
     padding: 0.5rem;
-    // // border: 1px solid black;
-    // align-items: stretch;
 }
 
 .detail-panel-item input {
@@ -155,7 +111,6 @@ button {
 }
 
 .detail-panel-col-rt {
-    // border: 1px solid black;
     padding: 2rem;
     display: flex;
     flex-direction: column;
@@ -163,7 +118,6 @@ button {
 }
 
 .cover-panel {
-    // border: 1px solid black;
     text-align: left;
     margin-bottom: 2rem;
 }
@@ -173,14 +127,12 @@ button {
 }
 
 .detail-panel-col-rt-buttons {
-    // border: 1px solid black;
     display: flex;
     flex-direction: column;
 }
 
 .detail-button {
     width: 100%;
-    // padding: 2rem;
     margin-top: 2rem;
 }
 
@@ -224,26 +176,18 @@ button.create-button {
     color: $back-col;
     background-color: $url-col;
     transition: $trans-t;
-}
-
-button.create-button:hover {
-    background-color: $back-col;
-    color: $text-col;
+    &:hover {
+        background-color: $back-col;
+        color: $text-col;
+    }
 }
 
 .login-panel {
     text-align: center;
     margin: 2rem auto;
-    // border: black solid 2px;
     padding: 1rem;
+    input {
+        width: 60%;
+        margin: 0.5rem;
+    }
 }
-
-.login-panel input {
-    width: 60%;
-    margin: 0.5rem;
-}
-
-
-// input .dev-detail-item {
-//     width: 100%;
-// }

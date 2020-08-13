@@ -20,8 +20,8 @@ export default function Home() {
                 </>
                 : <>
                     <Login/>
-                    <p>You have reached <strong>EbonyMemo</strong> admin panel.</p>
-                    <p>While there are areas of the website you can take a look at, most of the website functions require an admin credential. This page is reserved only for administrators of EbonyMemo.</p>
+                    <p>You have reached <strong>{"{Ebony Memo}"}</strong> content management application.</p>
+                    <p>While the content of this site is accessible to the public, credentials and authorization token are required for any data altering operation. If you would like to contribute, please contact Juno via email or Twitter.</p>
                     <p>If you are visitor, please feel free to browse our content at <a href="http://ebonymemo.com" target={"_blank"}>EbonyMemo.com</a>.</p>
                 </>
             }
@@ -44,10 +44,12 @@ function Login() {
 
         if (username === '') {
             setError('Please enter username');
+            return;
         }
 
         if (password === '') {
-            setPassword('Please enter password')
+            setError('Please enter password')
+            return;
         }
 
         const res = await auth.login(username, password);

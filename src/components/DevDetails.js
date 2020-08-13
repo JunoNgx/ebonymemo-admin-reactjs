@@ -104,6 +104,10 @@ export default function DevDetails({editMode}) {
     function handleSubmission() {
 
         setMsg('');
+        if (!auth.isAuthenticated) {
+            showError('Login is required for data alteration')
+            return;
+        }
         if (devId === '') {
             showError('devId is required and not filled');
             return;
@@ -180,6 +184,10 @@ export default function DevDetails({editMode}) {
     }
 
     function handleDeletion() {
+        if (!auth.isAuthenticated) {
+            showError('Login is required for data alteration')
+            return;
+        }
         if (window.confirm('Please confirm the deletion of this developer from the database. This will affect other documents using this entry, do make preparation before proceeding.')) {
             // console.log('confirm deletion');
             // fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`, {

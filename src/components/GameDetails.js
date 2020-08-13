@@ -92,6 +92,12 @@ export default function GameDetails({editMode}) {
     }
 
     async function handleDeletion() {
+        setMsg('');
+        if (!auth.isAuthenticated) {
+            showError('Login is required for data alteration')
+            return;
+        }
+
         if (window.confirm('Are you sure you wish to delete this document?')) {
             try {
                 const rawRes = await fetch(
@@ -117,6 +123,11 @@ export default function GameDetails({editMode}) {
     async function handleSubmission() {
 
         setMsg('');
+        if (!auth.isAuthenticated) {
+            showError('Login is required for data alteration')
+            return;
+        }
+
         if (gameId === '') {
             showError('gameId is required.')
             return;
@@ -259,7 +270,7 @@ export default function GameDetails({editMode}) {
                 <div className="detail-panel-item">
                     <label>
                         <p><span className="code"><strong>description</strong></span> (String): A moderate-length description of the game by the editor. Use markdown. Also do take note that the input box can be resized for your convenience. The preview text will be shown below.</p>
-                        <textarea value={description} onChange={(e)=>{setDescription(e.target.value)}} placeholder="This box can be resized."/>
+                        <textarea value={description} onChange={(e)=>{setDescription(e.target.value)}} placeholder="This box can be resized." rows="40" cols="60"/>
                     </label>
                     <div><ReactMarkdown source={description}/></div>
                 </div>

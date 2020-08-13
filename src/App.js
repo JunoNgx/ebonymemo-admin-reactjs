@@ -10,7 +10,7 @@ import About from './components/About';
 import DevDetails from './components/DevDetails';
 import GameDetails from './components/GameDetails';
 import { AuthProvider } from './components/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+// import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
     return (
@@ -29,22 +29,22 @@ function App() {
                         <Route exact path="/developers">
                             <ItemList type="dev"/>
                         </Route>
-                        <ProtectedRoute path="/developers/new">
+                        <Route path="/developers/new">
                             <DevDetails editMode={false}/>
-                        </ProtectedRoute>
-                        <ProtectedRoute path="/developers/:devId">
+                        </Route>
+                        <Route path="/developers/:devId">
                             <DevDetails editMode={true}/>
-                        </ProtectedRoute>
+                        </Route>
 
                         <Route exact path="/games">
                             <ItemList type="game"/>
                         </Route>
-                        <ProtectedRoute path="/games/new">
+                        <Route path="/games/new">
                             <GameDetails editMode={false}/>
-                        </ProtectedRoute>
-                        <ProtectedRoute path="/games/:gameId">
+                        </Route>
+                        <Route path="/games/:gameId">
                             <GameDetails editMode={true}/>
-                        </ProtectedRoute>
+                        </Route>
                         
                         <Route path="/about">
                             <About/>

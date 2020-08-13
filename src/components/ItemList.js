@@ -83,10 +83,11 @@ export default function ItemList({type}) {
 
     return (
         <div className="item-list">
-            {(!auth.isAuthenticated)
+            {/* {(!auth.isAuthenticated)
                 ? <p className="error">Login is required for data access and modification.</p>
                 : <Link to={typeVars.createButtonLink}><button className="create-button">{typeVars.createButtonLabel}</button></Link>
-            }      
+            }       */}
+            <Link to={typeVars.createButtonLink}><button className="create-button">{typeVars.createButtonLabel}</button></Link>
             <input type="text" value={searchTerm} onChange={handleSearchChange}></input>
             {(isFetched)
                 ? <table>
