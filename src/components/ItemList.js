@@ -10,13 +10,7 @@ export default function ItemList({type}) {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [isFetched, setIsFetched] = useState(false);
-    const [typeVars, setTypeVars] = useState({
-        // // url: 'https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/',
-        // url: `${process.env.REACT_APP_API_URL}/devs`,
-        // idVar: "devId",
-        // createButtonLabel: "Create New Developer",
-        // createButtonLink: "developers/new"
-    })
+    const [typeVars, setTypeVars] = useState({})
 
     const auth = useContext(AuthContext);
 
@@ -41,7 +35,6 @@ export default function ItemList({type}) {
     function setTypeVariables() {
         if (type === "dev") {
             setTypeVars({
-                // url: 'https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/',
                 url: `${process.env.REACT_APP_API_URL}/devs`,
                 idVar: "devId",
                 createButtonLabel: "Create New Developer",
@@ -49,7 +42,6 @@ export default function ItemList({type}) {
             })
         } else if (type === "game") {
             setTypeVars({
-                // url: 'https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/',
                 url: `${process.env.REACT_APP_API_URL}/games`,
                 idVar: "gameId",
                 createButtonLabel: "Create New Game",
@@ -83,10 +75,6 @@ export default function ItemList({type}) {
 
     return (
         <div className="item-list">
-            {/* {(!auth.isAuthenticated)
-                ? <p className="error">Login is required for data access and modification.</p>
-                : <Link to={typeVars.createButtonLink}><button className="create-button">{typeVars.createButtonLabel}</button></Link>
-            }       */}
             <Link to={typeVars.createButtonLink}><button className="create-button">{typeVars.createButtonLabel}</button></Link>
             <input type="text" value={searchTerm} onChange={handleSearchChange}></input>
             {(isFetched)

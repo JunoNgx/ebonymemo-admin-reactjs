@@ -12,28 +12,17 @@ export default function DevDetails({editMode}) {
     const [website, setWebsite] = useState('');
     const [personnel, setPersonnel] = useState([]);
 
-    // const [error, setError] = useState('');
-    // const [backendRes, setBackendRes] = useState('');
-    // const location = useLocation();
-
     const [msg, setMsg] = useState('')
     const [msgClassName, setMsgClassName] = useState('')
     
     const match = useRouteMatch('/developers/:devId');
     const history = useHistory();
-    // const location = useLocation();
     const auth = useContext(AuthContext);
 
     useEffect(() => {
         async function fetchData() {
 
-            // const { isLoading, error, data } = useQuery("devs", async () => {
-                
-            // })
-
-            // await fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`)
             await fetch(`${process.env.REACT_APP_API_URL}/devs/${match.params.devId}`)
-            // await fetch(`http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`)
                 .then(async (res) => {
                     if (!res.ok) {
                         throw Error(res.statusText);
@@ -144,16 +133,10 @@ export default function DevDetails({editMode}) {
         }
 
         bodyContent.origin.toUpperCase();
-        // `http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`
-        // `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`
 
         const _url = (editMode)
-            // ? `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`
-            // : `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/`;
             ? `${process.env.REACT_APP_API_URL}/devs/${match.params.devId}`
             : `${process.env.REACT_APP_API_URL}/devs/`;
-            // ? `http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`
-            // : `http://localhost:3000/.netlify/functions/server/devs/`;
         const _method = (editMode) ? 'PATCH' : 'POST';
 
         // Submission
@@ -164,6 +147,7 @@ export default function DevDetails({editMode}) {
             _url,
             {
                 method: _method,
+                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${auth.accessToken}`
@@ -189,10 +173,8 @@ export default function DevDetails({editMode}) {
             return;
         }
         if (window.confirm('Please confirm the deletion of this developer from the database. This will affect other documents using this entry, do make preparation before proceeding.')) {
-            // console.log('confirm deletion');
-            // fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/${match.params.devId}`, {
+            console.log('confirming deletion');
             fetch(`${process.env.REACT_APP_API_URL}/devs/${match.params.devId}`, {
-            // fetch(`http://localhost:3000/.netlify/functions/server/devs/${match.params.devId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',

@@ -20,8 +20,6 @@ export default function GameDetails({editMode}) {
     
     const [devs, setDevs] = useState([]);
     const [isFetchedDevData, setIsFetchDevData] = useState(false);
-    // const [error, setError] = useState('');
-    // const [backendRes, setBackendRes] = useState('');
     const [msg, setMsg] = useState('')
     const [msgClassName, setMsgClassName] = useState('')
 
@@ -32,9 +30,7 @@ export default function GameDetails({editMode}) {
     useEffect(()=>{
         async function fetchDevData() {
             try {
-                // const rawRes = await fetch('https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/devs/');
                 const rawRes = await fetch(`${process.env.REACT_APP_API_URL}/devs/`);
-                // const rawRes = await fetch('http://localhost:3000/.netlify/functions/server/devs/');
                 const data = await rawRes.json();
                 setDevs(data.result);
                 setIsFetchDevData(true);
@@ -48,9 +44,7 @@ export default function GameDetails({editMode}) {
     useEffect(()=>{
         async function fetchGameData() {
             try {
-                // const rawRes = await fetch(`https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`)
                 const rawRes = await fetch(`${process.env.REACT_APP_API_URL}/games/${match.params.gameId}`)
-                // const rawRes = await fetch(`http://localhost:3000/.netlify/functions/server/games/${match.params.gameId}`)
                 const data = await rawRes.json();
 
                 setGameId(data.result.gameId);
@@ -101,10 +95,7 @@ export default function GameDetails({editMode}) {
         if (window.confirm('Are you sure you wish to delete this document?')) {
             try {
                 const rawRes = await fetch(
-                    // `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`, {
                     `${process.env.REACT_APP_API_URL}/games/${match.params.gameId}`, {
-                // const rawRes = await fetch(
-                    // `http://localhost:3000/.netlify/functions/server/devs/${match.params.gameId}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
@@ -161,21 +152,13 @@ export default function GameDetails({editMode}) {
             description,
         }
 
-        // console.log(match.params.gameId.trim())
-        // console.log(gameId + ' === ' + match.params.gameId.trim() + ' is ' + (gameId === match.params.gameId.trim()) )
         if (editMode && gameId === match.params.gameId.trim()) {
             delete bodyContent.gameId;
-            // console.log('Removed gameId from request bodyContent')
         }
 
         const _url = (editMode)
-            // ? `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/${match.params.gameId}`
-            // : `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/games/`;
             ? `${process.env.REACT_APP_API_URL}/games/${match.params.gameId}`
             : `${process.env.REACT_APP_API_URL}/games/`;
-        // const _url = (editMode)
-        //     ? `http://localhost:3000/.netlify/functions/server/games/${match.params.gameId}`
-        //     : `http://localhost:3000/.netlify/functions/server/games/`;
         const _method = (editMode) ? 'PATCH' : 'POST';
 
         showRequest('Performing ' + _method)
@@ -191,14 +174,10 @@ export default function GameDetails({editMode}) {
             );
             // console.log(auth.accessToken);
             const data = await rawRes.json();
-            console.log(data);
+            // console.log(data);
             if (editMode) {
-                // console.log(`${data.message}; ${data.result.nModified} document has been updated.`)
-                // setMsg(`${data.message}; ${data.result.nModified} document has been updated.`)
-                // showApiRes(data.message + "; " + data.result.nModified + "document has been updated.");
                 showApiRes(`${data.message}; ${data.result.nModified} document has been updated.`)
             } else {
-                console.log(data)
                 showApiRes(`${data.message}; ${data.result.name} (${data.result.gameId}) has been created.`)
             }
         } catch(e) {

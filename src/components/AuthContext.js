@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// import Login from './Login';
 
 const AuthContext = React.createContext();
 
@@ -13,8 +12,6 @@ function AuthProvider({children}) {
     async function login(username, password) {
         try {
             const rawRes = await fetch(
-                // `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/admins/login`,
-                // `http://localhost:3000/.netlify/functions/server/admins/login`,
                 `${process.env.REACT_APP_API_URL}/admins/login`,
                 {
                     method: 'POST',
@@ -45,9 +42,7 @@ function AuthProvider({children}) {
     function logout() {
 
         fetch(
-            // `https://scythian-rect-mrt-viking.netlify.app/.netlify/functions/server/admins/login`,
             `${process.env.REACT_APP_API_URL}/admins/logout`,
-            // `http://localhost:3000/.netlify/functions/server/admins/logout`,
             {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
