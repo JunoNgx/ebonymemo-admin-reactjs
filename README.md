@@ -1,6 +1,6 @@
 # Ebony Memo - Content Management Application
 
-This application is provides GUI and basic functionalities to manage content for [Ebony Memo](https://ebonymemo.com/), an arthouse videogame curator website for smartphones. For the remaining components:
+This application provides GUI and basic functionalities to manage content for [Ebony Memo](https://ebonymemo.com/), an arthouse videogame curator website for smartphones. For the remaining components:
 * [View the frontend source](https://github.com/JunoNgx/ebonymemo-frontend-next).
 * [View the backend source](https://github.com/JunoNgx/ebonymemo-backend-nodejs).
 
