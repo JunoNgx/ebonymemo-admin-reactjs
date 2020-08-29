@@ -8,8 +8,9 @@ export default function About() {
 
     return (
         <div className="about">
-            <p>This is the admin panel for <strong>EbonyMemo</strong>, an arthouse smartphone videogame currator website that has not yet been deployed.</p>
-            <p>This panel is reserved for administrators only and not meant for customers.</p>
+            <p>This is the content management application for <strong>Ebony Memo</strong>, an arthouse videogame curator website for smartphones.</p>
+            <p>This application is made with <strong>ReactJS</strong> and communicates with a <strong>NodeJS/Express backend</strong> via a RESTful API. For more information and the juicy details, view the <a href="https://github.com/JunoNgx/ebonymemo-backend-nodejs" target="_blank">source on GitHub</a>.</p>
+            <p>For any question, suggestion, or query, please feel free to contact Juno via Twitter, GitHub or email.</p>
         </div>
     )
 }

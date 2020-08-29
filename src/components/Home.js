@@ -20,9 +20,9 @@ export default function Home() {
                 </>
                 : <>
                     <Login/>
-                    <p>You have reached <strong>{"{Ebony Memo}"}</strong> content management application.</p>
-                    <p>While the content of this site is accessible to the public, credentials and authorization token are required for any data altering operation. If you would like to contribute, please contact Juno via email or Twitter.</p>
-                    <p>If you are visitor, please feel free to browse our content at <a href="http://ebonymemo.com" target={"_blank"}>EbonyMemo.com</a>.</p>
+                    <p>You have reached <strong>{"{Ebony Memo}"}</strong> content management application GUI.</p>
+                    <p>While the content of this application is generally accessible to the public, credentials and authorization token are required for any data altering operation. If you would like to contribute, please contact Juno via email or Twitter.</p>
+                    <p>If you are a visitor, please feel free to browse the content at <a href="http://ebonymemo.com" target={"_blank"}>EbonyMemo.com</a>.</p>
                 </>
             }
         </div>
