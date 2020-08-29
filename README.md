@@ -29,8 +29,8 @@ For more information on ReactJS, visit [the documentation on ReactJS.org](https:
 First, clone the repository and move into the directory:
 
 ```
-git clone https://github.com/JunoNgx/ebonymemo-backend-nodejs.git
-cd ebonymemo-backend-nodejs
+git clone https://github.com/JunoNgx/ebonymemo-admin-reactjs.git
+cd ebonymemo-admin-reactjs
 ```
 
 Then, run the developement server:
