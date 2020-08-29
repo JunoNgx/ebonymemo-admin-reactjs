@@ -28,6 +28,11 @@ body {
     min-height: 70vh;
 }
 
+.header {
+    display: flex;
+    justify-content: space-around;
+}
+
 .navbar {
     display: flex;
     flex-direction: row;
