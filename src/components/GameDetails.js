@@ -197,7 +197,7 @@ export default function GameDetails({editMode}) {
 
                 <div className="detail-panel-item">
                     <label >
-                        <p><span className="code"><strong>gameId</strong></span> (String, required): The unique identifier for the game. Generally not displayed to user. Only alphanumerics are recommended. Can be edited, but must always be unique. <span className="code">"new"</span> is specifically not allowed.</p>
+                        <p><span className="code"><strong>gameId</strong></span> (String, required): The unique identifier for the game. Lowercase only. Generally not displayed to user. Only alphanumerics are recommended. Can be edited, but must always be unique. <span className="code">"new"</span> is specifically not allowed.</p>
                         <input type="text" value={gameId} onChange={(e)=>setGameId((e.target.value).toLowerCase())} />
                     </label>
                 </div>
@@ -209,7 +209,7 @@ export default function GameDetails({editMode}) {
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>releaseYear</strong></span> (String, required): The year the game was released. Number of four digits only. Accepts only within the range of 2000-2100.</p>
+                        <p><span className="code"><strong>releaseYear</strong></span> (Number, required): The year the game was released. Number of four digits only. Accepts only within the range of 2000-2100.</p>
                         <input type="number" value={releaseYear} onChange={(e)=>{setReleaseYear(e.target.value)}} maxLength={4} />
                     </label>
                 </div>
@@ -229,7 +229,7 @@ export default function GameDetails({editMode}) {
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>android</strong></span> (String): The URL to the Android Play Store release of the game, if available. Enter <span className="code">delisted</span> for delisted release.</p>
+                        <p><span className="code"><strong>android</strong></span> (String): The URL to the Google Play Store release of the game, if available. Enter <span className="code">delisted</span> for delisted release.</p>
                         <input type="text" value={android} onChange={(e)=>{setAndroid(e.target.value)}} />
                     </label>
                 </div>
@@ -244,7 +244,7 @@ export default function GameDetails({editMode}) {
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>featured</strong></span> (Boolean): Whether the game is considered a "featured", or "Editor's Choice", title for the site. Featured titles will be randomly displayed ont the landing page and can also be specificially broswed by the delivery application.</p>
+                        <p><span className="code"><strong>featured</strong></span> (Boolean): Whether the game is being featured as an "Editor's Choice" title for the site. Featured games are randomly showcased on the landing page, indicated in the browse page, and can also be sorted for priority display.</p>
                         <select value={featured} onChange={(e)=>{setFeatured(e.target.value)}} >
                             <option value="false">No</option>
                             <option value="true">Yes</option>

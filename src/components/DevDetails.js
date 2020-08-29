@@ -85,9 +85,6 @@ export default function DevDetails({editMode}) {
         let _personnel = [...personnel];
         _personnel.splice(index, 1);
         setPersonnel(_personnel)
-        
-        // setPersonnel([])
-        // console.log('remove');
     }
 
     function handleSubmission() {
@@ -199,37 +196,37 @@ export default function DevDetails({editMode}) {
                 }
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>devId</strong></span> (String, required): the unique identifier for the developers without space or capitlisation. When in doubt, using Twitter handle is usually a safe and good choice. This can be edited, but make sure the new value is also unique.</p>
+                        <p><span className="code"><strong>devId</strong></span> (String, required): The unique identifier for the developers without space or capitalisation. When in doubt, using Twitter handle is usually a safe and good choice. This can be edited, but make sure the new value is also unique.</p>
                         <input type="text" value={devId} onChange={(e)=>setDevId((e.target.value).toLowerCase())}></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>name</strong></span> (String, required): the full and formal capitalised name of the developer. This is what will be displayed for the most part.</p>
+                        <p><span className="code"><strong>name</strong></span> (String, required): The full and formal capitalised name of the developer. This is what will be displayed for the most part.</p>
                         <input type="text" value={name} onChange={(e)=>setName(e.target.value)}></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>origin</strong></span> (String, required): the base country of developer in <strong>ISO code</strong> (e.g. US, SE, SG). Two characters only.</p>
+                        <p><span className="code"><strong>origin</strong></span> (String, required): The base country of developer in <strong>ISO code</strong> (e.g. US, SE, SG). Two characters only.</p>
                         <input type="text" value={origin} onChange={(e)=>setOrigin(e.target.value.toUpperCase())} maxLength={2} pattern="[a-z]"></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>twitter</strong></span> (String): the Twitter handle of the developer, without full url and without the @ sign (e.g. <span className="var">adamatomic</span> for Adam Saltsman).</p>
+                        <p><span className="code"><strong>twitter</strong></span> (String): The Twitter handle of the developer, without full url and without the @ sign (e.g. <span className="var">adamatomic</span> for Adam Saltsman).</p>
                         <input type="text" value={twitter} onChange={(e)=>setTwitter(e.target.value)}></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>website</strong></span> (String): the full website url of the developer.</p>
+                        <p><span className="code"><strong>website</strong></span> (String): The full website url of the developer.</p>
                         <input type="text" value={website} onChange={(e)=>setWebsite(e.target.value)}></input>
                     </label>
                 </div>
                 <div className="detail-panel-item">
                     <label>
-                        <p><span className="code"><strong>personnel</strong></span> (Array of  Strings): a list of notable and/or key members of the group (when applicable). Highly optional. Don't fret it.</p>
+                        <p><span className="code"><strong>personnel</strong></span> (Array of Strings): A list of notable and/or key members of the group (when applicable). Highly optional. Don't fret it.</p>
                         {personnel.map((person, index) => (
                             <div key={index}>
                                 <input
