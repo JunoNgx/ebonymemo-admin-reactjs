@@ -76,6 +76,10 @@ export default function ItemList({type}) {
     return (
         <div className="item-list">
             <Link to={typeVars.createButtonLink}><button className="create-button">{typeVars.createButtonLabel}</button></Link>
+            {(!auth.isAuthenticated)
+                ? <p className="error">WARNING: You have not logged in. Your attempt to submit data will be denied.</p>
+                : ''
+            }
             <input type="text" value={searchTerm} onChange={handleSearchChange}></input>
             {(isFetched)
                 ? <table>

@@ -193,6 +193,10 @@ export default function DevDetails({editMode}) {
     return (
         <div className="detail-panel">
             <div className="detail-panel-col-lt">
+                {(!auth.isAuthenticated)
+                    ? <p className="error">WARNING: You have not logged in. Your attempt to submit data will be denied.</p>
+                    : ''
+                }
                 <div className="detail-panel-item">
                     <label>
                         <p><span className="code"><strong>devId</strong></span> (String, required): the unique identifier for the developers without space or capitlisation. When in doubt, using Twitter handle is usually a safe and good choice. This can be edited, but make sure the new value is also unique.</p>

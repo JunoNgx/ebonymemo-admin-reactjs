@@ -190,6 +190,11 @@ export default function GameDetails({editMode}) {
 
             <div className="detail-panel-col-lt">
 
+                {(!auth.isAuthenticated)
+                    ? <p className="error">WARNING: You have not logged in. Your attempt to submit data will be denied.</p>
+                    : ''
+                }
+
                 <div className="detail-panel-item">
                     <label >
                         <p><span className="code"><strong>gameId</strong></span> (String, required): The unique identifier for the game. Generally not displayed to user. Only alphanumerics are recommended. Can be edited, but must always be unique. <span className="code">"new"</span> is specifically not allowed.</p>
