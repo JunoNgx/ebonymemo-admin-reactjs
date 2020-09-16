@@ -11,6 +11,7 @@ export default function GameDetails({editMode}) {
     const [name, setName] = useState('');
     const [releaseYear, setReleaseYear] = useState('');
     const [devId, setDevId] = useState('');
+    const [tags, setTags] = useState([]);
     const [ios, setIos] = useState('');
     const [android, setAndroid] = useState('');
     const [other, setOther] = useState(false);
@@ -51,6 +52,7 @@ export default function GameDetails({editMode}) {
                 setName(data.result.name);
                 setReleaseYear(data.result.releaseYear);
                 setDevId(data.result.devId);
+                setTags(data.result.tags);
                 setIos(data.result.ios);
                 setAndroid(data.result.android);
                 setOther(data.result.other);
@@ -83,6 +85,26 @@ export default function GameDetails({editMode}) {
     function showRequest(_message) {
         setMsg(_message);
         setMsgClassName('')
+    }
+
+    function processTagsToString() {
+        let outputStr = '';
+        tags.forEach((tag, index) => {
+            if (tag) outputStr += tag.name
+            if (index < tags.length - 1) outputStr += ';'
+        })
+        return outputStr;
+    }
+
+    function handleTagsChange(e) {
+        let complexArr = [];
+        const simpleArr = e.target.value.split(';');
+        
+        simpleArr.forEach((tag) => {
+            complexArr.push({name: tag});
+        })
+
+        setTags(complexArr);
     }
 
     async function handleDeletion() {
@@ -145,6 +167,7 @@ export default function GameDetails({editMode}) {
             name,
             releaseYear,
             devId,
+            tags,
             ios,
             android,
             other,
@@ -198,7 +221,7 @@ export default function GameDetails({editMode}) {
                 <div className="detail-panel-item">
                     <label >
                         <p><span className="code"><strong>gameId</strong></span> (String, required): The unique identifier for the game. Lowercase only. Generally not displayed to user. Only alphanumerics are recommended. Can be edited, but must always be unique. <span className="code">"new"</span> is specifically not allowed.</p>
-                        <input type="text" value={gameId} onChange={(e)=>setGameId((e.target.value).toLowerCase())} />
+                        <input type="text" value={gameId} onChange={(e)=>setGameId((e.target.value).trim().toLowerCase())} />
                     </label>
                 </div>
                 <div className="detail-panel-item">
@@ -219,6 +242,12 @@ export default function GameDetails({editMode}) {
                         <select value={devId} onChange={(e)=>{setDevId(e.target.value)}} >
                             {(isFetchedDevData) ? <DevsOptions devs={devs}/> : ''}
                         </select>
+                    </label>
+                </div>
+                <div className="detail-panel-item">
+                    <label>
+                        <p><span className="code"><strong>tags</strong></span> (array of Objects): The tags to summarise the game to user for discovery purpose. This is an array of objects in the database for searching and accessing purpose, but is simplified here in this GUI and processed prior to submission. To separate each item with semicolon (e.g. <span className="code">puzzle;deep;minimalist</span>). Priortize genre tags first when available. Do consult with the existing sets of tags and avoid unnecessarily creating new tags.</p>
+                        <input type="string" value={processTagsToString()} onChange={handleTagsChange} />
                     </label>
                 </div>
                 <div className="detail-panel-item">
